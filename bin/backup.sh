@@ -53,4 +53,25 @@ case "$1" in
             echo " * Skipping solr backup, no such container"
         fi
         ;;
+
+    ###################################
+    ## MariaDB
+    ###################################
+    "mariadb")
+        logMsg "Docker Container Id : $(extDockerContainerId mariadb)"
+        logMsg "Backup Directory : ${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
+        logMsg "Vars : $1"
+        if [[ -n "$(extDockerContainerId mariadb)" ]]; then
+            if [ -f "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}" ]; then
+                logMsg "Removing old backup file..."
+                rm -f -- "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
+            fi
+
+            logMsg "Starting mariadb backup..."
+            dockerExec mysqldump --opt --single-transaction --events --all-databases --routines --comments -P 3306 -h 192.168.99.100 -u vti -pvti | bzip2 > "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
+            logMsg "Finished"
+        else
+            echo " * Skipping mariadb backup, no such container"
+        fi
+        ;;
 esac

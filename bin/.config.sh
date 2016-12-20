@@ -30,6 +30,7 @@ CODE_DIR=$($READLINK -f "$ROOT_DIR/app")
 BACKUP_DIR=$($READLINK -f "$ROOT_DIR/backup")
 BACKUP_SOLR_FILE='solr.cores.tbz2'
 BACKUP_MYSQL_FILE='mysql.sql.bz2'
+BACKUP_MARIADB_FILE='mariadb.sql.bz2'
 
 #######################################
 ## Functions
@@ -57,8 +58,16 @@ dockerContainerId() {
     echo "$(docker-compose ps -q "$1" 2> /dev/null || echo "")"
 }
 
+extDockerContainerId() {
+    echo "$(docker ps -q -f name="$1" 2> /dev/null || echo "")"
+}
+
 dockerExec() {
     docker exec -i "$(docker-compose ps -q app)" $@
+}
+
+extDockerExec() {
+    docker exec -i "$(docker ps -q -f name="$1")" ${@:2}
 }
 
 dockerCopyFrom() {

@@ -59,4 +59,26 @@ case "$1" in
             echo " * Skipping solr restore, no such container"
         fi
         ;;
+
+    ###################################
+    ## MariaDB
+    ###################################
+    "mariadb")
+        if [[ -n "$(extDockerContainerId mariadb)" ]]; then
+            if [ -f "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}" ]; then
+                logMsg "Docker Container Id : $(extDockerContainerId mariadb)"
+                logMsg "Backup File : ${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
+                logMsg "Starting mariadb restore..."
+                bzcat "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}" | extDockerExec mariadb mysql -u vti -pvti
+                echo "FLUSH PRIVILEGES;" | extDockerExec mariadb mysql -u vti -pvti
+                logMsg "Finished"
+            else
+                errorMsg "mariadb backup file not found"
+                exit 1
+            fi
+        else
+            echo " * Skipping mariadb restore, no such container"
+        fi
+        ;;
+
 esac

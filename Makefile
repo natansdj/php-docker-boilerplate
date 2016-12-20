@@ -54,11 +54,21 @@ solr-restore:
 	bash ./bin/restore.sh solr
 
 #############################
+# MariaDB
+#############################
+
+mariadb-backup:
+	bash ./bin/backup.sh mariadb
+
+mariadb-restore:
+	bash ./bin/restore.sh mariadb
+
+#############################
 # General
 #############################
 
-backup:  mysql-backup  solr-backup
-restore: mysql-restore solr-restore
+backup:  mysql-backup  solr-backup  mariadb-backup
+restore: mysql-restore solr-restore mariadb-restore
 
 build:
 	bash bin/build.sh
@@ -66,10 +76,10 @@ build:
 bash: shell
 
 shell:
-	docker exec -it -u application $$(docker-compose ps -q app) /bin/bash
+	winpty docker exec -it -u application $$(docker-compose ps -q app) bash
 
 root:
-	docker exec -it -u root $$(docker-compose ps -q app) /bin/bash
+	winpty docker exec -it -u root $$(docker-compose ps -q app) bash
 
 #############################
 # Argument fix workaround
