@@ -69,7 +69,7 @@ case "$1" in
                 logMsg "Docker Container Id : $(extDockerContainerId mariadb)"
                 logMsg "Backup File : ${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
                 logMsg "Starting mariadb restore..."
-                bzcat "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}" | extDockerExec mariadb mysql -u vti -pvti
+                bzcat "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}" | extDockerExec mariadb mysql -u root -p${MYSQL_ROOT_PASSWORD}
                 echo "FLUSH PRIVILEGES;" | extDockerExec mariadb mysql -u vti -pvti
                 logMsg "Finished"
             else

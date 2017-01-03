@@ -3,4 +3,5 @@
 nbproject
 /backup/*
 /app/*
-/docker-compose.yml
+#/docker-compose.yml
+/Dockerfile

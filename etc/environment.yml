@@ -12,7 +12,11 @@
 # General
 WEB_DOCUMENT_ROOT=/app/
 WEB_DOCUMENT_INDEX=index.php
-CLI_SCRIPT=php /app/index.php
+# CLI_SCRIPT="php /app/index.php"
+
+DOCUMENT_ROOT=/app/symfony/web/
+DOCUMENT_INDEX=index.php
+CLI_SCRIPT="php /app/symfony/symfony"
 
 #######################################
 # SSH settings
@@ -20,7 +24,7 @@ CLI_SCRIPT=php /app/index.php
 # -> ssh-rsa AAAAB3Nza....
 #  Github public ssh keys:
 # -> https://github.com/USERNAME.keys
-SSH_AUTH_KEY=""
+SSH_AUTH_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlcDawAe7dM7LniruPnBt+Hb24NBw7BZW4j8rP+YHKWbXdPToTCKobgBFKcApa6vbJqKATKc9S3NbpJgnHR4r0lfyy8SwjTwCnZOc9+5RuS34HmU7nJRsTDLelTpjUxsbFIrZn21rgF8n+NBuITMBEma1mZvOzXG+xhptT2I4x1FtsKkJ4KYoJzKbKuYFvGHwnjxVwi4ovys5PPUxMDBhcWj6EyzCYdnwFc1k2NpKks+z2AHvOscQ9uZFTDd1SWtc1LD77Qsx2sQIZjaC+TqhVPkJtpIys+NzTmBAr2vOV5bZhC20dkpykylstvD1CBsgSJcI89PGzP1XiFabyt9Jv natan@indovti.com"
 
 #######################################
 # MySQL settings
@@ -30,10 +34,10 @@ SSH_AUTH_KEY=""
 #    because it's stored database in
 #    volume and provisioning is only
 #    done once.
-MYSQL_ROOT_PASSWORD=dev
+MYSQL_ROOT_PASSWORD=root
 MYSQL_USER=dev
 MYSQL_PASSWORD=dev
-MYSQL_DATABASE=database
+MYSQL_DATABASE=vox_hrm
 
 #######################################
 # PostgreSQL settings
