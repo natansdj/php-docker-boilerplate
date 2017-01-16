@@ -19,11 +19,13 @@ case "$1" in
     ## MySQL
     ###################################
     "mysql")
-        if [[ -n "$(dockerContainerId mysql)" ]]; then
+        if [[ -n "$(extDockerContainerId mysql)" ]]; then
             if [ -f "${BACKUP_DIR}/${BACKUP_MYSQL_FILE}" ]; then
                 logMsg "Starting MySQL restore..."
-                bzcat "${BACKUP_DIR}/${BACKUP_MYSQL_FILE}" | dockerExec mysql
-                echo "FLUSH PRIVILEGES;" | dockerExec mysql
+                #bzcat "${BACKUP_DIR}/${BACKUP_MYSQL_FILE}" | dockerExec mysql
+                bzcat "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}" | extDockerExec mysql mysql -u root -p${MYSQL_ROOT_PASSWORD}
+                #echo "FLUSH PRIVILEGES;" | dockerExec mysql
+                echo "FLUSH PRIVILEGES;" | extDockerExec mysql mysql -u vti -pvti
                 logMsg "Finished"
             else
                 errorMsg "MySQL backup file not found"

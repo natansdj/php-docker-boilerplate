@@ -15,18 +15,19 @@ services:
       #- postgres
       #- solr
       #- elasticsearch
-      #- redis
-      #- memcached
+#      - redis
+#      - memcached
       #- ftp
     external_links:
       - dev_mariadb:mariadb
+      - dev_mysql:mysql
     networks:
       - default
     ports:
       - "8001:80"
       #- "8443:443"
       - "10022:22"
-      - "9001:9000"
+      - "9000:9000"
     volumes:
        - ./app/:/app/
       - /tmp/debug/:/tmp/debug/
