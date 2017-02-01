@@ -31,7 +31,7 @@ BACKUP_DIR=$($READLINK -f "$ROOT_DIR/backup")
 BACKUP_SOLR_FILE='solr.cores.tbz2'
 BACKUP_MYSQL_FILE='mysql.sql.bz2'
 BACKUP_MARIADB_FILE='mariadb.sql.bz2'
-
+MYSQL_ROOT_PASSWORD='root'
 #######################################
 ## Functions
 #######################################

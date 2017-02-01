@@ -7,7 +7,7 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 
 source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.config.sh"
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -lt 1 ]; then
     echo "No type defined"
     exit 1
 fi
@@ -29,7 +29,7 @@ case "$1" in
             #dockerExec mysqldump --opt --single-transaction --events --all-databases --routines --comments | bzip2 > "${BACKUP_DIR}/${BACKUP_MYSQL_FILE}"
             source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../etc/environment.yml"
             #dockerExec mysqldump -h mysql -u root -p${MYSQL_ROOT_PASSWORD} --opt --single-transaction --events --all-databases --routines --comments | bzip2 > "${BACKUP_DIR}/${BACKUP_MYSQL_FILE}"
-            dockerExec mysqldump --opt --single-transaction --skip-events --all-databases --routines --comments -P 3307 -h 192.168.99.100 -u vti -pvti | bzip2 > "${BACKUP_DIR}/${BACKUP_MYSQL_FILE}"
+            dockerExec mysqldump --opt --single-transaction --skip-events --all-databases --routines --comments -P 3307 -h mysql -u vti -pvti | bzip2 > "${BACKUP_DIR}/${BACKUP_MYSQL_FILE}"
             logMsg "Finished"
         else
             echo " * Skipping mysql backup, no such container"
@@ -62,16 +62,32 @@ case "$1" in
     ###################################
     "mariadb")
         logMsg "Docker Container Id : $(extDockerContainerId mariadb)"
-        logMsg "Backup Directory : ${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
         logMsg "Vars : $1"
+
         if [[ -n "$(extDockerContainerId mariadb)" ]]; then
-            if [ -f "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}" ]; then
+            if [ "$#" -eq 2 ]; then
+              logMsg "Database defined"
+              logMsg "Database : $2"
+              SET_BACKUP_DIR="${BACKUP_DIR}/$2-${BACKUP_MARIADB_FILE}"
+              logMsg "Backup Directory : ${SET_BACKUP_DIR}"
+            else
+              SET_BACKUP_DIR="${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
+            fi
+
+            if [ -f "${SET_BACKUP_DIR}" ]; then
                 logMsg "Removing old backup file..."
-                rm -f -- "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
+                rm -f -- "${SET_BACKUP_DIR}"
             fi
 
             logMsg "Starting mariadb backup..."
-            dockerExec mysqldump --opt --single-transaction --skip-events --all-databases --routines --comments -P 3306 -h 192.168.99.100 -u vti -pvti | bzip2 > "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
+
+            if [ "$#" -eq 2 ]; then
+                dockerExec mysqldump --opt --single-transaction --skip-events --databases $2 --routines --comments -P 3306 -h mariadb -u vti -pvti | bzip2 > "${BACKUP_DIR}/$2-${BACKUP_MARIADB_FILE}"
+            else
+                logMsg "Backup Directory : ${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
+                dockerExec mysqldump --opt --single-transaction --skip-events --all-databases --routines --comments -P 3306 -h mariadb -u vti -pvti | bzip2 > "${BACKUP_DIR}/${BACKUP_MARIADB_FILE}"
+            fi
+
             logMsg "Finished"
         else
             echo " * Skipping mariadb backup, no such container"

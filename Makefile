@@ -58,7 +58,7 @@ solr-restore:
 #############################
 
 mariadb-backup:
-	bash ./bin/backup.sh mariadb
+	bash ./bin/backup.sh mariadb $(ARGS)
 
 mariadb-restore:
 	bash ./bin/restore.sh mariadb
@@ -76,10 +76,10 @@ build:
 bash: shell
 
 shell:
-	winpty docker exec -it -u application $$(docker-compose ps -q app) bash
+	docker exec -it -u application $$(docker-compose ps -q app) bash
 
 root:
-	winpty docker exec -it -u root $$(docker-compose ps -q app) bash
+	docker exec -it -u root $$(docker-compose ps -q app) bash
 
 #############################
 # Argument fix workaround
