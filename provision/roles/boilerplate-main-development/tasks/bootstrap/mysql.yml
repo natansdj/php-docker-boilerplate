@@ -1,9 +1,10 @@
 ---
 
-- name: Deploy root my.cnf
+- name: Deploy custom mysql-docker.cnf
   template:
-    src:   templates/my.cnf.j2
-    dest:  /etc/mysql/conf.d/mysql.cnf
+#    src:   templates/mysql-docker.cnf.j2
+    src:   "/opt/docker/etc/mysql/mysql-{{ PROJECT_NAME|lower }}.cnf"
+    dest:  "/etc/mysql/conf.d/z99-docker.cnf"
     owner: root
     group: root
     mode:  0644

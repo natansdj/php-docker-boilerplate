@@ -1,3 +1,4 @@
 ---
 
 PROVISION_CONTEXT: "{{ lookup('env','PROVISION_CONTEXT') }}"
+PROJECT_NAME: "{{ lookup('env','PROJECT_NAME') }}"

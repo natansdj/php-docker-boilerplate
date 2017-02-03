@@ -1,0 +1,28 @@
+{{ "Mysql Conf for docker" | comment }}
+{% set project = PROJECT_NAME|default('<PROJECT_NAME>') %}
+{{ project|upper|comment }}
+
+{% for mysql in MYSQL %}
+[client]
+host="{{ mysql.MYSQL_HOST }}"
+user="{{ mysql.MYSQL_USER }}"
+password="{{ mysql.MYSQL_PASSWORD }}"
+
+[mysql]
+host="{{ mysql.MYSQL_HOST }}"
+user="{{ mysql.MYSQL_USER }}"
+password="{{ mysql.MYSQL_ROOT_PASSWORD }}"
+database="{{ mysql.MYSQL_DATABASE }}"
+default-character-set=utf8
+local-infile=1
+show-warnings
+auto-rehash
+sigint-ignore
+reconnect
+
+[mysqldump]
+host="{{ mysql.MYSQL_HOST }}"
+user="root"
+password="{{ mysql.MYSQL_ROOT_PASSWORD }}"
+
+{% endfor %}

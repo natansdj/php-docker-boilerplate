@@ -5,3 +5,4 @@ nbproject
 /app/*
 /docker-compose.yml
 /Dockerfile
+/etc/mysql/*.cnf

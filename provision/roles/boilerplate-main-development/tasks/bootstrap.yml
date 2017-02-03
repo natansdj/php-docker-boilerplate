@@ -1,1 +1,13 @@
 ---
+#############################
+# Run tasks
+#############################
+
+- include: bootstrap/mysql.yml
+  when: not(
+          (PROJECT_NAME is undefined)
+          or
+          (PROJECT_NAME is none)
+          or
+          (PROJECT_NAME | trim == '')
+        )
