@@ -6,4 +6,4 @@ nbproject
 /docker-compose.yml
 /Dockerfile
 /etc/mysql/*.cnf
-/etc/env.yml
+/etc/environment.yml
