@@ -29,11 +29,12 @@ services:
       - "10022:22"
       - "9000:9000"
     volumes:
-       - ./app/:/app/
+      - storage:/storage
+      - ./app/:/app/
       - /tmp/debug/:/tmp/debug/
       - ./:/docker/
-    volumes_from:
-      - storage
+    # volumes_from:
+    #   - storage
     # cap and privileged needed for slowlog
     cap_add:
       - SYS_PTRACE
@@ -207,24 +208,18 @@ services:
   #######################################
   # Storage
   #######################################
-  storage:
-    build:
-      context: docker/storage/
-    volumes:
-      - /storage
+  # storage:
+  #   build:
+  #     context: docker/storage/
+  #   volumes:
+  #     - /storage
 
-#  nginx-proxy:
-#    image: jwilder/nginx-proxy:latest
-#    container_name: nginx_proxy
-#    ports:
-#     - 80:80
-#     # - 443:443
-#    volumes:
-#     - //var/run/docker.sock:/tmp/docker.sock:ro
-#     # - vhost.d:/etc/nginx/vhost.d:ro
-#    restart: always
-#    networks:
-#      - default
+volumes:
+  storage:
+    driver: local
+    driver_opts:
+      device: /home/vt745/Documents/_backup
+      o: bind
 
 networks:
   default:
